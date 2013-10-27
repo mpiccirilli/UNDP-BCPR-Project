@@ -21,4 +21,7 @@ gdeltAug2012 <- GetGDELT(start.date="2012-08-01", end.date="2012-08-31",
                           filter=list(ActionGeo_CountryCode="GG"))
 sapply(gdeltAug2012, mean, na.rm=TRUE)
 sapply(gdeltAug2012, max, na.rm=TRUE)
-#mean August 2012 Goldstein Scale
+#mean August 2012 Goldstein Scale: .3473
+#highest August 2012 Goldstein Scale: 10
+#mean average August 2012 Tone: 5.66
+#highest average August 2012 Tone: 18.6
