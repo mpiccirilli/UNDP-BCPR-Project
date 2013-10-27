@@ -1,0 +1,26 @@
+UN Project Proposal --> Alex R. 
+
+UNDP - development program 
+     -- poverty reduction
+     -- environmental
+     -- conflict perversion
+     	:: build national capacity, local grassroots NGO to be able to prevent and manage their own conflict. Supporting mediate efforts to bring different actors to lessen conflict
+	   :: dispel belief that UNDP is a "police", they're helpers of local government.
+Global Post
+       -- the think tank of the UNDP
+       -- mediators between the two. 
+       -- short study in Tunisia, to get what is in the data. 
+
+What do they want
+     --Conflict: the goldstein scale (looking at the negative and positive) and CAMEO. 
+how far do the trends go? -to- 2012 elections in Georgia. 
+    --What can the GDELT data tell us that we didn't know in terms of the four causes for conflict.
+    	   • what inside GDELT could be used to proxy conflict.
+	   -- What are the things that can apply to different types of conflict 
+	   -- What are the key areas of tension that happened in Georgia that we can keep an eye on for the next elections. 
+	   -- Focus on the predictability of violence in terms of knowing which parties will clash. 
+In Tunisia
+   -- Does the GDELT dataset reflect the events that we already know about
+   -- Georgia context to see whether the historical conflicts match the ones in GDELT. 
+
+GDELTblog.wordpress.com
