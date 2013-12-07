@@ -1,0 +1,97 @@
+/*
+Main CSS style sheet for index page of final product
+ */
+
+html{
+	font-family: 'Lato';
+}
+p{
+	text-align: center;
+	color: white;	
+}
+h1{
+	text-align: center;
+	color: white;
+}
+body{
+  background: black; /*#edf7fc*/
+  margin: 0 0;
+}
+.wrapper{
+	float: left;
+	width: 100%;
+}
+.left{
+	/*border: 1px solid black;*/
+	float: left;
+	z-index: -10;
+}
+.right{
+	z-index: 10;
+	/*border: 1px solid red;*/
+	left: 50%;
+	position: absolute;
+	height: 600px;
+	width: 49%;	
+}
+.header{
+	/*border: 1px solid blue;*/
+	height: 20%
+}
+#actors_menu{
+	height: 40%;
+	/*border: 1px solid yellow;*/
+}
+
+.styled-select select {
+   background: transparent;
+   width: 268px;
+   padding: 5px;
+   font-size: 16px;
+   line-height: 1;
+   border: 0;
+   border-radius: 0;
+   height: 34px;
+   -webkit-appearance: none;
+}
+
+.styled-select {
+	margin: 25px auto;
+	left: 100px;
+    width: 240px;
+    height: 34px;
+    overflow: hidden;
+    background: url(new_arrow.jpg) no-repeat right #ddd;
+    /*border: 1px solid #ccc;*/
+}
+
+#prediction{
+	height: 20%;
+	/*border: 1px solid green;*/
+}
+#confidence{
+	height: 20%;
+	/*border: 1px solid purple;*/
+}
+
+/*map*/
+.stroke {
+  fill: none;
+  stroke: #000;
+  stroke-width: 3px;
+}
+.fill {
+  fill: #edf7fc;
+}
+.land {
+  fill: #222;
+}
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+.Georgia{
+  stroke: red;
+  stroke-width: 2px;
+}
