@@ -78,10 +78,12 @@ var color = d3.scale.threshold()
 //ratio data
 var ratio = {};
 var gold = {};
+var country = {};
 d3.csv("ratios_with_iso.csv", function(d) {
   for (var i = 0; i < d.length; i++) {
     ratio[d[i].iso] = +d[i].ratio;
     gold[d[i].iso] = +d[i].avg_goldstein;
+    country[d[i].country_code] = d[i].iso;
   };
 });
 
@@ -114,9 +116,9 @@ d3.json("world-topo.json", function(error, world) {
   .enter().insert("path", ".graticule")
   .attr("class", "country")
   .attr("class", function(d) { return d.properties.name; })
-  .attr("id", function(d) { return d.id; })
+  .attr("id", function(d) { return "id" + d.id; })
   .attr("d", path)
-  .style("fill", function(d) { return color(ratio[+d.id]) })
+  .style("fill", function(d) { return color(ratio[+d.id]); })
   .call(d3.helper.tooltip()
     .style({ color: '#111', 'font-family': 'Helvetica', 'background': 'rgba(220,220,220,0.8)'})
     .text(function(d){ 

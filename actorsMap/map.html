@@ -19,7 +19,7 @@
     <div class="left" id="map"></div>
     <div class="right">
       <div class="header">
-        <h1><b>Predictor of Interaction</b></h1>
+        <h1><b>Interaction Predictor</b></h1>
       </div>
       <div id="actors_menu">
         <p> Country Actor </p> 
@@ -69,7 +69,8 @@ svg.append("use")
 
 svg.append("use")
 .attr("class", "fill")
-.attr("xlink:href", "#sphere");
+.attr("xlink:href", "#sphere")
+.style("fill", "#edf7fc");
 
 // map configuration
 var projection = d3.geo.orthographic()
@@ -112,10 +113,18 @@ d3.csv("CAMEO.csv", function(d) {
 // actor-choosing
 $('.styled-select').change(function() {
   $("#predict_text h1").remove();
+  $("#confidence_text p").remove();
   var a1 = $("#actor1 :selected").val();
   var a2 = $("#actor2 :selected").val();
   console.log(a1);
   console.log(a2);
+
+  svg.select("#id" + country[a1] + "")
+  .style("fill", function(d) { return "steelblue"; });
+
+  svg.select("#id" + country[a2] + "")
+  .style("fill", function(d) { return "steelblue"; });
+
   if (a1 != undefined && a2 != undefined) {
     predict(a1, a2);
   };
@@ -132,8 +141,6 @@ function predict(var1, var2) {
       d3.select("#predict_text").append("h1").text(p);
       d3.select("#confidence_text").append("p").text(c + "% confident of that.");
       translate(p);
-      // console.log(p);
-      // console.log(c);
     }
   };
 }
