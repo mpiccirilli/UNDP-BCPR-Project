@@ -4,158 +4,60 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> 
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
   <script src="http://d3js.org/topojson.v1.min.js"></script>
-
+  <script type="text/javascript" src="main.js"></script>
   <link rel="stylesheet" type="text/css" href="main.css">
   <link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
-
-  <title> ConflictPredict </title>
+  <title> InterPredict </title>
+  
 </head>
 <body>
   <div class="wrapper">
     <div class="left" id="map"></div>
     <div class="right">
       <div class="header">
-        <h1><b>Predictor of Awesome</b></h1>
+        <h1><b>Predictor of Interaction</b></h1>
       </div>
       <div id="actors_menu">
         <p> Country Actor </p> 
         <div class="styled-select">
-         <select>          
-          <option> Here is the first option </option>
-          <option> The second option </option>                
+         <select id="actor1">                 
+            <option>Select a country </option>  
         </select>
       </div>
       <p> Country Acted Upon</p>  
       <div class="styled-select">
-       <select>
-        <option> Here is the third option</option>
-        <option> The fourth option</option>
+       <select id="actor2">
+            <option>Select any country </option>
       </select>
     </div>          
   </div>
   <div id="prediction">
-    <p> The predicted interaction for the pair of actors you chose is... </p>          
+    <p id ="predict_text"> The predicted interaction for the pair of actors you chose is... </p>          
   </div>      
   <div id="confidence">
-    <p>And we're about X% confident about that... </p>
+    <p id="confidence_text">And we're about... </p>
   </div>       
 </div>
-
 </div>
+
 </body>
 
 <script>
-//tooltip
-d3.helper = {};
-d3.helper.tooltip = function(){
-  var tooltipDiv;
-  var bodyNode = d3.select('body').node();
-  var attrs = {};
-  var text = '';
-  var styles = {};
-
-  function tooltip(selection){
-
-    selection.on('mouseover.tooltip', function(pD, pI){
-      var name, value;
-                // Clean up lost tooltips
-                d3.select('body').selectAll('div.tooltip').remove();
-                // Append tooltip
-                tooltipDiv = d3.select('body').append('div');
-                tooltipDiv.attr(attrs);
-                tooltipDiv.style(styles);
-                var absoluteMousePos = d3.mouse(bodyNode);
-                tooltipDiv.style({
-                  left: (absoluteMousePos[0] + 10)+'px',
-                  top: (absoluteMousePos[1] - 15)+'px',
-                  position: 'absolute',
-                  'z-index': 1001
-                });
-                // Add text using the accessor function, Crop text arbitrarily
-                tooltipDiv.style('width', function(d, i){ return (text(pD, pI).length > 80) ? '300px' : null; })
-                .html(function(d, i){return text(pD, pI);});
-              })
-    .on('mousemove.tooltip', function(pD, pI){
-                // Move tooltip
-                var absoluteMousePos = d3.mouse(bodyNode);
-                tooltipDiv.style({
-                  left: (absoluteMousePos[0] + 10)+'px',
-                  top: (absoluteMousePos[1] - 15)+'px'
-                });
-                // Keep updating the text, it could change according to position
-                tooltipDiv.html(function(d, i){ return text(pD, pI); });
-              })
-    .on('mouseout.tooltip', function(pD, pI){
-                // Remove tooltip
-                tooltipDiv.remove();
-              });
-
-  }
-
-  tooltip.attr = function(_x){
-    if (!arguments.length) return attrs;
-    attrs = _x;
-    return this;
-  };
-
-  tooltip.style = function(_x){
-    if (!arguments.length) return styles;
-    styles = _x;
-    return this;
-  };
-
-  tooltip.text = function(_x){
-    if (!arguments.length) return text;
-    text = d3.functor(_x);
-    return this;
-  };
-
-  return tooltip;
-};
-// end of tooltip
-
 var width = 550,
 height = 500,
 rotate = [0,0],
 graticule = d3.geo.graticule();
-
-var projection = d3.geo.orthographic()
-.scale(260)
-.translate([width / 2, height / 2])
-.clipAngle(70 - 1e-3)
-.rotate([-30, -25, 0])
-.precision(.1);
-
-var path = d3.geo.path()
-.projection(projection);
-
-var m0,
-o0;
-var drag = d3.behavior.drag()
-.on("dragstart", function() {
-  var proj = projection.rotate();
-  m0 = [d3.event.sourceEvent.pageX, d3.event.sourceEvent.pageY];
-  o0 = [-proj[0],-proj[1]];
-})
-.on("drag", function() {
-  if (m0) {
-    var m1 = [d3.event.sourceEvent.pageX, d3.event.sourceEvent.pageY],
-    o1 = [o0[0] + (m0[0] - m1[0]) / 4, o0[1] + (m1[1] - m0[1]) / 4];
-    projection.rotate([-o1[0], -o1[1]]);
-  }
-    // Update the map
-    path = d3.geo.path().projection(projection);
-    d3.selectAll("path").attr("d", path);
-  });
 
 var svg = d3.select("#map").append("svg")
 .attr("width", width)
 .attr("height", height)
 .call(drag);
 
+// append to svg containing and defining the map
 svg.append("defs").append("path")
 .datum({type: "Sphere"})
 .attr("id", "sphere")
@@ -169,54 +71,85 @@ svg.append("use")
 .attr("class", "fill")
 .attr("xlink:href", "#sphere");
 
-//ratio data
-var ratio = {};
-var gold = {};
+// map configuration
+var projection = d3.geo.orthographic()
+.scale(260)
+.translate([width / 2, height / 2])
+.clipAngle(70 - 1e-3)
+.rotate([-30, -25, 0])
+.precision(.1);
 
-var color = d3.scale.threshold()
-.domain([0.0,0.2,0.4,0.6,0.8,1.0,1.26, 1.4,1.8,2.0,2.5,3.5,5.5,6.5])
-.range(["#fff","rgb(57,49,104)","rgb(75,65,138)","rgb(94,81,173)","rgb(110,98,181)","rgb(142,133,198)","rgb(174,168,214)"  ,  "rgb(176,198,133)", "rgb(153,181,98)","rgb(128,156,73)", "rgb(142,173,81)","rgb(113,138,65)","rgb(85,104,49)","rgb(56,69,33)"]); // dark purple to dark green 
+var path = d3.geo.path()
+.projection(projection);
 
-d3.csv("ratios_with_iso.csv", function(d) {
+// countries and predictions
+
+var predictions = [],
+confidences = [],
+actor1 = [],
+actor2 = [],
+cameo = [],
+meaning = [];
+
+d3.csv("faux.csv", function(d) {
   for (var i = 0; i < d.length; i++) {
-    ratio[d[i].iso] = +d[i].ratio;
-    gold[d[i].iso] = +d[i].avg_goldstein;
+    predictions.push(+d[i].predicted);
+    confidences.push(+d[i].confidence);
+    actor1.push(d[i].actor1Code);
+    actor2.push(d[i].actor2Code);    
+    d3.selectAll("select").append("option").text(d[i].actor1Code); // append buttons
   };
 }); 
 
-// map 
-d3.json("world-topo.json", function(error, world) {
-  var countries = topojson.feature(world, world.objects.countries).features,
-  neighbors = topojson.neighbors(world.objects.countries.geometries);
+d3.csv("CAMEO.csv", function(d) {
+  for (var i = 0; i < d.length; i++) {
+    cameo.push(+d[i].cameo);
+    meaning.push(d[i].meaning);
+    console.log(d[i].meaning);
+  };
+}); 
 
-  svg.selectAll(".country")
-  .data(countries)
-  .enter().insert("path", ".graticule")
-  .attr("class", "country")
-  .attr("class", function(d) { return d.properties.name; })
-  .attr("id", function(d) { return d.id; })
-  .attr("d", path)
-  .style("fill", function(d) { return color(ratio[+d.id]) })
-  .call(d3.helper.tooltip()
-    .style({ color: '#111', 'font-family': 'Helvetica', 'background': 'rgba(220,220,220,0.8)'})
-    .text(function(d){ 
-      if (ratio[d.id]===undefined) { console.log("undefined ratio"); }
-      else{ return d.properties.name + " " + (gold[d.id]).toFixed(2); };
-    }))
-  .on('mouseover', function(d){ 
-    if (ratio[d.id]===undefined) { console.log("undefined ratio"); } 
-    else{ d3.select(this).style({opacity: '0.6'}); };
-  })
-  .on('mouseout', function(d){ d3.select(this).style({opacity: '1.0'}); });
-
-
-  svg.insert("path", ".graticule")
-  .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
-  .attr("class", "boundary")
-  .attr("d", path);
+// actor-choosing
+$('.styled-select').change(function() {
+  $("#predict_text h1").remove();
+  var a1 = $("#actor1 :selected").val();
+  var a2 = $("#actor2 :selected").val();
+  console.log(a1);
+  console.log(a2);
+  if (a1 != undefined && a2 != undefined) {
+    predict(a1, a2);
+  };
 });
 
-d3.select(self.frameElement).style("height", height + "px");
+function predict(var1, var2) {
+  console.log("lol predicting on " + var1 + " and " + var2);
+  for (var i = 0; i < actor1.length; i++) {
+    console.log("in for loop");
+    if (actor1[i] == var1 && actor2[i] == var2){
+      console.log("yay, it's a match");
+      var p = predictions[i];
+      var c = confidences[i];
+      d3.select("#predict_text").append("h1").text(p);
+      d3.select("#confidence_text").append("p").text(c + "% confident of that.");
+      translate(p);
+      // console.log(p);
+      // console.log(c);
+    }
+  };
+}
+
+function translate(cameo_code) {
+  console.log("lol translating on " + cameo_code);
+  for (var i = 0; i < cameo.length; i++) {
+    console.log("in for loop");
+    if (cameo[i] == cameo_code){
+      console.log("yay, it's a match");
+      var m = meaning[i];
+      console.log(m);
+      console.log(i);
+    }
+  };
+}
 
 </script>
 
