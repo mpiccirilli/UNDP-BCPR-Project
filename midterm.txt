@@ -1,6 +1,0 @@
-#The code below is used to download the GDELT datasets in R and subset for all actions that have taken place in Georgia.
-#You must have the package GDELTtools installed in order to run the first line.  
-#For recent years I would recommend only downloading one month at a time since the files are so large
-
-gdelt.august11 <- GetGDELT(start.date="2011-08-01", end.date="2011-08-31",
-                         filter=list(ActionGeo_CountryCode="GG"))
